@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using BepInEx.Logging;
 using MurrenMods.WeAreMurderers.Object;
 using Nautilus.Handlers;
 
@@ -9,15 +11,14 @@ namespace MurrenMods.WeAreMurderers.Entries
     {
         public static void RegisterEntries(EntryData[] entries)
         {
-            LanguageHandler.SetLanguageLine("EncyPath_wamlogs/", "Alien Logs");
             foreach (EntryData e in entries)
             {
-                LanguageHandler.SetLanguageLine("wamlogs/" + e.Path, e.Path);
                 for (int i = 1; i <= e.Count; i++)
                 {
-                    PDAHandler.AddEncyclopediaEntry(e.Path + "_" + i, "wamlogs/" + e.Path, null, null);
+                    PDAHandler.AddEncyclopediaEntry(e.Path + "_" + i, "wamlogs/" + e.Path, "fuck", "this");
                 }
             }
+            PDAHandler.AddEncyclopediaEntry("AlienMeasurements", "wamlogs/", "forg", "forg");
             ObjectRegistry.RegisterChips(entries);
         }
         
@@ -27,7 +28,7 @@ namespace MurrenMods.WeAreMurderers.Entries
             {
                 for (int i = 1; i <= languageLevel; i++)
                 {
-                    PDAEncyclopedia.Add("wamlogs/" + entry + "_" + i, true);
+                    PDAEncyclopedia.Add(entry + "_" + i, true);
                 }
             }
         }

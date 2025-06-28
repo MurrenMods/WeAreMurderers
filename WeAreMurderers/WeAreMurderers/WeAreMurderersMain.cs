@@ -2,6 +2,7 @@
 using BepInEx.Logging;
 using HarmonyLib;
 using MurrenMods.WeAreMurderers.Entries;
+using Nautilus.Handlers;
 
 namespace MurrenMods.WeAreMurderers
 {
@@ -24,6 +25,7 @@ namespace MurrenMods.WeAreMurderers
             Log = Logger;
             
             EntryHandler.RegisterEntries(Data.Entries);
+            LanguageHandler.RegisterLocalizationFolder();
         }
     }
 }

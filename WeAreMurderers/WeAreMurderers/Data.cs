@@ -7,7 +7,7 @@ namespace MurrenMods.WeAreMurderers
     public static class Data
     {
         public static int FoundChips = 0;
-        public static int LanguageLevel => Math.Min(1, (FoundChips + 1) / 2);
+        public static int LanguageLevel => Math.Max(1, (FoundChips + 1) / 2);
 
         public static List<string> unlockedEntries = new List<string>();
         
