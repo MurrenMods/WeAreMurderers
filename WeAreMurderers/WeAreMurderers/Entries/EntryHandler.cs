@@ -1,17 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using MurrenMods.WeAreMurderers.Object;
 using Nautilus.Handlers;
 
 namespace MurrenMods.WeAreMurderers.Entries
 {
-    public class EntryHandler
+    public static class EntryHandler
     {
-        private EntryData[] _entries;
-
-        public void RegisterEntries()
+        public static void RegisterEntries(EntryData[] entries)
         {
             LanguageHandler.SetLanguageLine("EncyPath_wamlogs/", "Alien Logs");
-            foreach (EntryData e in _entries)
+            foreach (EntryData e in entries)
             {
                 LanguageHandler.SetLanguageLine("wamlogs/" + e.Path, e.Path);
                 for (int i = 1; i <= e.Count; i++)
@@ -21,7 +20,7 @@ namespace MurrenMods.WeAreMurderers.Entries
             }
         }
         
-        public void UnlockEntries(int languageLevel, List<string> entries)
+        public static void UnlockEntries(int languageLevel, List<string> entries)
         {
             foreach (string entry in entries)
             {

@@ -1,6 +1,7 @@
 ﻿using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
+using MurrenMods.WeAreMurderers.Entries;
 
 namespace MurrenMods.WeAreMurderers
 {
@@ -21,6 +22,8 @@ namespace MurrenMods.WeAreMurderers
             Harmony.PatchAll();
             Logger.LogInfo(PluginName + " " + VersionString + " " + "loaded.");
             Log = Logger;
+            
+            EntryHandler.RegisterEntries(Data.Entries);
         }
     }
 }
