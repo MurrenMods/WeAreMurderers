@@ -16,7 +16,7 @@ namespace MurrenMods.WeAreMurderers.Object
                 var info = PrefabInfo.WithTechType(e.Path, e.Path, "A small chip that can store and process data.");
                 var chipprefab = new CustomPrefab(info);
                 
-                //temporarily use the ion cube model for chips
+                //temporarily use the ion cube model for chips TODO: replace with custom model
                 var chipobj = new CloneTemplate(info, TechType.Lead);
                 chipprefab.SetGameObject(chipobj);
                 
@@ -24,6 +24,7 @@ namespace MurrenMods.WeAreMurderers.Object
             }
             
             //handle spawns
+            //TODO: Add grave
 
             var spawns = new List<SpawnInfo>()
             {

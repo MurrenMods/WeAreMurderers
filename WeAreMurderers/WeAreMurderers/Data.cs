@@ -6,10 +6,7 @@ namespace MurrenMods.WeAreMurderers
 {
     public static class Data
     {
-        public static int FoundChips = 0;
-        public static int LanguageLevel => Math.Max(1, (FoundChips + 1) / 2);
-
-        public static List<string> unlockedEntries = new List<string>();
+        public static int LanguageLevel => Math.Max(1, (WeAreMurderersMain.SaveData.FoundChips + 1) / 2);
         
         public static EntryData[] Entries
         {

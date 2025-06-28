@@ -16,12 +16,12 @@ namespace MurrenMods.WeAreMurderers.Patches
             if (!id.Contains("QX-VR_log")) return true;
 
             // If the chip is already unlocked, do not allow pickup
-            if (Data.unlockedEntries.Contains(id))
+            if (WeAreMurderersMain.SaveData.UnlockedEntries.Contains(id))
             {
                 return false;
             }
 
-            if (id == "QX-VR_log9" && !Data.unlockedEntries.Contains("QX-VR_log8"))
+            if (id == "QX-VR_log9" && !WeAreMurderersMain.SaveData.UnlockedEntries.Contains("QX-VR_log8"))
             {
                 // If the chip is the last one, ensure the previous one is unlocked
                 //TODO: PDA notification of missing chip
@@ -34,14 +34,14 @@ namespace MurrenMods.WeAreMurderers.Patches
             }
 
             // If the chip is not unlocked, allow pickup and register the entry
-            Data.unlockedEntries.Add(id);
+            WeAreMurderersMain.SaveData.UnlockedEntries.Add(id);
             int oldll = Data.LanguageLevel;
-            Data.FoundChips++;
+            WeAreMurderersMain.SaveData.FoundChips++;
             if(Data.LanguageLevel != oldll)
             {
                 //TODO: PDA notification of increased translation levels
             }
-            EntryHandler.UnlockEntries(Data.LanguageLevel,  Data.unlockedEntries);
+            EntryHandler.UnlockEntries(Data.LanguageLevel, WeAreMurderersMain.SaveData.UnlockedEntries);
             return false;
         }
     }

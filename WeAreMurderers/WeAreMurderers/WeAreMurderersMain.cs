@@ -13,6 +13,8 @@ namespace MurrenMods.WeAreMurderers
         private const string MyGuid = "com.MurrenMods.WeAreMurderers";
         private const string PluginName = "We Are Murderers";
         private const string VersionString = "0.1.0";
+        
+        public static SaveData SaveData = new SaveData();
 
         private static readonly Harmony Harmony = new Harmony(MyGuid);
 
@@ -26,6 +28,7 @@ namespace MurrenMods.WeAreMurderers
             
             EntryHandler.RegisterEntries(Data.Entries);
             LanguageHandler.RegisterLocalizationFolder();
+            SaveData = SaveDataHandler.RegisterSaveDataCache<SaveData>();
         }
     }
 }
