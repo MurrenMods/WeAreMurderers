@@ -18,6 +18,7 @@ namespace MurrenMods.WeAreMurderers.Entries
                     PDAHandler.AddEncyclopediaEntry(e.Path + "_" + i, "wamlogs/" + e.Path, null, null);
                 }
             }
+            ObjectRegistry.RegisterChips(entries);
         }
         
         public static void UnlockEntries(int languageLevel, List<string> entries)
