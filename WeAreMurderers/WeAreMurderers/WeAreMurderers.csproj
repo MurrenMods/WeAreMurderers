@@ -8,7 +8,7 @@
         <ProjectGuid>{C9F9ED8D-3A04-4DF7-AB12-85F8049935DF}</ProjectGuid>
         <OutputType>Library</OutputType>
         <AppDesignerFolder>Properties</AppDesignerFolder>
-        <RootNamespace>WeAreMurderers</RootNamespace>
+        <RootNamespace>MurrenMods.WeAreMurderers</RootNamespace>
         <AssemblyName>WeAreMurderers</AssemblyName>
         <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
         <FileAlignment>512</FileAlignment>
@@ -33,13 +33,42 @@
         <WarningLevel>4</WarningLevel>
     </PropertyGroup>
     <ItemGroup>
+        <Reference Include="0Harmony">
+          <HintPath>..\..\..\..\..\Subnautica\BepInEx\core\0Harmony.dll</HintPath>
+        </Reference>
+        <Reference Include="Assembly-CSharp">
+          <HintPath>..\..\..\..\..\Subnautica\Subnautica_Data\Managed\Assembly-CSharp.dll</HintPath>
+        </Reference>
+        <Reference Include="Assembly-CSharp-firstpass">
+          <HintPath>..\..\..\..\..\Subnautica\Subnautica_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
+        </Reference>
+        <Reference Include="BepInEx">
+          <HintPath>..\..\..\..\..\Subnautica\BepInEx\core\BepInEx.dll</HintPath>
+        </Reference>
+        <Reference Include="BepInEx.Harmony">
+          <HintPath>..\..\..\..\..\Subnautica\BepInEx\core\BepInEx.Harmony.dll</HintPath>
+        </Reference>
+        <Reference Include="Nautilus">
+          <HintPath>..\..\..\..\..\Subnautica\BepInEx\plugins\Nautilus\Nautilus.dll</HintPath>
+        </Reference>
         <Reference Include="System"/>
         <Reference Include="System.Core"/>
         <Reference Include="System.Data"/>
         <Reference Include="System.Xml"/>
+        <Reference Include="UnityEngine">
+          <HintPath>..\..\..\..\..\Subnautica\Subnautica_Data\Managed\UnityEngine.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.CoreModule">
+          <HintPath>..\..\..\..\..\Subnautica\Subnautica_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.UI">
+          <HintPath>..\..\..\..\..\Subnautica\Subnautica_Data\Managed\UnityEngine.UI.dll</HintPath>
+        </Reference>
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="Class1.cs"/>
+        <Compile Include="Entries\EntryData.cs" />
+        <Compile Include="Entries\EntryHandler.cs" />
+        <Compile Include="WeAreMurderersMain.cs" />
         <Compile Include="Properties\AssemblyInfo.cs"/>
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
