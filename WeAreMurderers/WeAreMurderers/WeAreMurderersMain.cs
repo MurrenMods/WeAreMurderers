@@ -57,6 +57,11 @@ namespace MurrenMods.WeAreMurderers
                 .SetMode2D()
                 .SetSound("chip9")
                 .Register();
+            
+            builder.CreateNewEvent("disabledgun", "bus:/master/SFX_for_pause/PDA_pause/all/all voice/AI voice")
+                .SetMode2D()
+                .SetSound("thankyou")
+                .Register();
         }
     }
 }

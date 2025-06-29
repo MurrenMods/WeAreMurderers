@@ -37,10 +37,10 @@
           <HintPath>..\..\..\..\..\Subnautica\BepInEx\core\0Harmony.dll</HintPath>
         </Reference>
         <Reference Include="Assembly-CSharp">
-          <HintPath>..\..\..\..\..\Subnautica\Subnautica_Data\Managed\Assembly-CSharp.dll</HintPath>
+          <HintPath>..\..\..\..\..\Subnautica\Subnautica_Data\Managed\publicized_assemblies\Assembly-CSharp_publicized.dll</HintPath>
         </Reference>
         <Reference Include="Assembly-CSharp-firstpass">
-          <HintPath>..\..\..\..\..\Subnautica\Subnautica_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
+          <HintPath>..\..\..\..\..\Subnautica\Subnautica_Data\Managed\publicized_assemblies\Assembly-CSharp-firstpass_publicized.dll</HintPath>
         </Reference>
         <Reference Include="BepInEx">
           <HintPath>..\..\..\..\..\Subnautica\BepInEx\core\BepInEx.dll</HintPath>
@@ -83,6 +83,7 @@
         <Compile Include="Entries\EntryHandler.cs" />
         <Compile Include="Object\ObjectRegistry.cs" />
         <Compile Include="Patches\PickupablePatch.cs" />
+        <Compile Include="Patches\PrecursorDisableGunTerminalPatch.cs" />
         <Compile Include="SaveData.cs" />
         <Compile Include="WeAreMurderersMain.cs" />
         <Compile Include="Properties\AssemblyInfo.cs"/>
