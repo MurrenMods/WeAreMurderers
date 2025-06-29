@@ -10,9 +10,10 @@ namespace MurrenMods.WeAreMurderers.Patches
         [HarmonyPostfix]
         public static void NotifyGoalCompletePostfix(PrecursorDisableGunTerminal __instance)
         {
-            if (StoryGoalManager.main.IsGoalComplete(__instance.onPlayerCuredGoal.key))
+            if (StoryGoalManager.main.IsGoalComplete(__instance.gunDeactivate.key))
             {
                 PDALog.Add("thankyou", true);
+                //TODO: Audio not playing
             }
         }
     }

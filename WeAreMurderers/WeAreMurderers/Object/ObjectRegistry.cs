@@ -39,9 +39,9 @@ namespace MurrenMods.WeAreMurderers.Object
             graveprefab.SetGameObject(graveobj);
             graveprefab.Register();
             
-            
             CoordinatedSpawnsHandler.RegisterCoordinatedSpawn(new SpawnInfo("QX-VR_Grave", new Vector3(347.2f, 155.6f, 908.5f), new Vector3(0, -10f, -20f)));
 
+            //TODO: WHERE ARE THEY GOING
             var spawns = new List<SpawnInfo>()
             {
                 new SpawnInfo(entries[0].Path, new Vector3(451,-94f, 1176.6f)),
