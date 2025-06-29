@@ -3,6 +3,7 @@ using MurrenMods.WeAreMurderers.Entries;
 using Nautilus.Assets;
 using Nautilus.Assets.PrefabTemplates;
 using Nautilus.Handlers;
+using Nautilus.Utility;
 using UnityEngine;
 
 namespace MurrenMods.WeAreMurderers.Object
@@ -11,20 +12,35 @@ namespace MurrenMods.WeAreMurderers.Object
     {
         public static void RegisterChips(EntryData[] entries)
         {
+            var chip0info = PrefabInfo.WithTechType("chip0", "The end of the world", "<CORRUPTED>");
+            var chip0prefab = new CustomPrefab(chip0info);
+            var chip0 = WeAreMurderersMain.WAMAssets.LoadAsset<GameObject>("AlienDataCPU");
+            PrefabUtils.AddBasicComponents(chip0, chip0info.ClassID, chip0info.TechType, LargeWorldEntity.CellLevel.Medium);
+            MaterialUtils.ApplySNShaders(chip0);
+            chip0.AddComponent<Pickupable>();
+            chip0.SetActive(true);
+            chip0prefab.SetGameObject(chip0);
+            chip0prefab.Register();
             foreach(EntryData e in entries)
             {
                 var info = PrefabInfo.WithTechType(e.Path, e.Path, "A small chip that can store and process data.");
                 var chipprefab = new CustomPrefab(info);
-                
-                //temporarily use the ion cube model for chips TODO: replace with custom model
-                var chipobj = new CloneTemplate(info, TechType.Lead);
+                var chipobj = new CloneTemplate(info, "chip0");
                 chipprefab.SetGameObject(chipobj);
-                
                 chipprefab.Register();
             }
             
-            //handle spawns
-            //TODO: Add grave
+            var graveinfo = PrefabInfo.WithTechType("QX-VR_Grave", "QX-VR_Grave", "A grave with a small device lodged on where the head would be");
+            var graveprefab = new CustomPrefab(graveinfo);
+            var graveobj = WeAreMurderersMain.WAMAssets.LoadAsset<GameObject>("AlienGrave");
+            graveobj.SetActive(true);
+            PrefabUtils.AddBasicComponents(graveobj, graveinfo.ClassID, graveinfo.TechType, LargeWorldEntity.CellLevel.Medium);
+            MaterialUtils.ApplySNShaders(graveobj);
+            graveprefab.SetGameObject(graveobj);
+            graveprefab.Register();
+            
+            
+            CoordinatedSpawnsHandler.RegisterCoordinatedSpawn(new SpawnInfo("QX-VR_Grave", new Vector3(347.2f, 155.6f, 908.5f), new Vector3(0, -10f, -20f)));
 
             var spawns = new List<SpawnInfo>()
             {
@@ -40,6 +56,8 @@ namespace MurrenMods.WeAreMurderers.Object
             };
             
             CoordinatedSpawnsHandler.RegisterCoordinatedSpawns(spawns);
+            
+            WeAreMurderersMain.Log.LogInfo("Successfully registered and spawned objects..");
         }
     }
 }

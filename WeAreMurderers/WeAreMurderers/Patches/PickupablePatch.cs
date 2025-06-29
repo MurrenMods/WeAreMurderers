@@ -2,12 +2,14 @@
 using System.Linq;
 using HarmonyLib;
 using MurrenMods.WeAreMurderers.Entries;
+using Nautilus.Handlers;
 
 namespace MurrenMods.WeAreMurderers.Patches
 {
     [HarmonyPatch(typeof(Pickupable))]
     public class PickupablePatch
     {
+        private static bool playedNotification = false;
         [HarmonyPatch(nameof(Pickupable.OnHandClick))]
         [HarmonyPrefix]
         public static bool OnHandClickPrefix(Pickupable __instance)
@@ -24,7 +26,11 @@ namespace MurrenMods.WeAreMurderers.Patches
             if (id == "QX-VR_log9" && !WeAreMurderersMain.SaveData.UnlockedEntries.Contains("QX-VR_log8"))
             {
                 // If the chip is the last one, ensure the previous one is unlocked
-                //TODO: PDA notification of missing chip
+                if (!playedNotification)
+                {
+                    playedNotification = true;
+                    PDALog.Add("invalidchip9", true);
+                }
                 return false;
             }
 
@@ -39,7 +45,7 @@ namespace MurrenMods.WeAreMurderers.Patches
             WeAreMurderersMain.SaveData.FoundChips++;
             if(Data.LanguageLevel != oldll)
             {
-                //TODO: PDA notification of increased translation levels
+                PDALog.Add("languagelevel", true);
             }
             EntryHandler.UnlockEntries(Data.LanguageLevel, WeAreMurderersMain.SaveData.UnlockedEntries);
             return false;

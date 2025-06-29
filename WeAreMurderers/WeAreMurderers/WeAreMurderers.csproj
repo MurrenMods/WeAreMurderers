@@ -48,6 +48,9 @@
         <Reference Include="BepInEx.Harmony">
           <HintPath>..\..\..\..\..\Subnautica\BepInEx\core\BepInEx.Harmony.dll</HintPath>
         </Reference>
+        <Reference Include="FMODUnity">
+          <HintPath>..\..\..\..\..\Subnautica\Subnautica_Data\Managed\FMODUnity.dll</HintPath>
+        </Reference>
         <Reference Include="Nautilus">
           <HintPath>..\..\..\..\..\Subnautica\BepInEx\plugins\Nautilus\Nautilus.dll</HintPath>
         </Reference>
@@ -60,6 +63,12 @@
         </Reference>
         <Reference Include="UnityEngine">
           <HintPath>..\..\..\..\..\Subnautica\Subnautica_Data\Managed\UnityEngine.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.AssetBundleModule">
+          <HintPath>..\..\..\..\..\Subnautica\Subnautica_Data\Managed\UnityEngine.AssetBundleModule.dll</HintPath>
+        </Reference>
+        <Reference Include="UnityEngine.AudioModule">
+          <HintPath>..\..\..\..\..\Subnautica\Subnautica_Data\Managed\UnityEngine.AudioModule.dll</HintPath>
         </Reference>
         <Reference Include="UnityEngine.CoreModule">
           <HintPath>..\..\..\..\..\Subnautica\Subnautica_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
@@ -80,6 +89,9 @@
     </ItemGroup>
     <ItemGroup>
       <Content Include="Localization\English.json" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Assets\" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
