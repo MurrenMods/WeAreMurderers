@@ -24,7 +24,7 @@ namespace MurrenMods.WeAreMurderers.Entries
             
             PDAHandler.AddLogEntry("languagelevel", "languagelevel", Nautilus.Utility.AudioUtils.GetFmodAsset("languagelevel"));
             PDAHandler.AddLogEntry("invalidchip9", "invalidchip9", Nautilus.Utility.AudioUtils.GetFmodAsset("invalidchip9"));
-            PDAHandler.AddLogEntry("thankyou", "thankyou", Nautilus.Utility.AudioUtils.GetFmodAsset("disabledgun"));
+            PDAHandler.AddLogEntry("thankyou", "thankyou", Nautilus.Utility.AudioUtils.GetFmodAsset("thankyou"));
         }
         
         public static void UnlockEntries(int languageLevel, List<string> entries)
