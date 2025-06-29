@@ -13,7 +13,6 @@ namespace MurrenMods.WeAreMurderers.Patches
             if (StoryGoalManager.main.IsGoalComplete(__instance.gunDeactivate.key))
             {
                 PDALog.Add("thankyou", true);
-                //TODO: Audio not playing
             }
         }
     }
