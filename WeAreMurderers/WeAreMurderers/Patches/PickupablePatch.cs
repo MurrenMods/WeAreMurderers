@@ -15,11 +15,16 @@ namespace MurrenMods.WeAreMurderers.Patches
         public static bool OnHandClickPrefix(Pickupable __instance)
         {
             string id = __instance.GetTechType().ToString();
-            if (!id.Contains("QX-VR_log")) return true;
+            if (!id.Contains("QX-VR_log"))
+            {
+                WeAreMurderersMain.Log.LogInfo("Picked up item with id " + id + ", not a QX-VR log, skipping pickup logic.");
+                return true;
+            }
 
             // If the chip is already unlocked, do not allow pickup
             if (WeAreMurderersMain.SaveData.UnlockedEntries.Contains(id))
             {
+                WeAreMurderersMain.Log.LogInfo("Chip " + id + " is already unlocked, skipping pickup logic.");
                 return false;
             }
 
@@ -31,6 +36,7 @@ namespace MurrenMods.WeAreMurderers.Patches
                     playedNotification = true;
                     PDALog.Add("invalidchip9", true);
                 }
+                WeAreMurderersMain.Log.LogInfo("Chip 9 " + id + " cannot be picked up because QX-VR_log8 is not unlocked.");
                 return false;
             }
 
@@ -48,6 +54,7 @@ namespace MurrenMods.WeAreMurderers.Patches
                 PDALog.Add("languagelevel", true);
             }
             EntryHandler.UnlockEntries(Data.LanguageLevel, WeAreMurderersMain.SaveData.UnlockedEntries);
+            WeAreMurderersMain.Log.LogInfo("Picked up chip " + id + ", unlocking entry and updating language level.");
             return false;
         }
     }

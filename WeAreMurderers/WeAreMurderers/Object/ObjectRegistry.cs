@@ -1,23 +1,29 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using MurrenMods.WeAreMurderers.Entries;
 using Nautilus.Assets;
 using Nautilus.Assets.PrefabTemplates;
 using Nautilus.Handlers;
 using Nautilus.Utility;
 using UnityEngine;
+using UWE;
 
 namespace MurrenMods.WeAreMurderers.Object
 {
     public static class ObjectRegistry
     {
+        static List<UnityEngine.Texture> _textures = new List<UnityEngine.Texture>();
         public static void RegisterChips(EntryData[] entries)
         {
+            PrepareTextureBank();
             var chip0info = PrefabInfo.WithTechType("chip0", "The end of the world", "<CORRUPTED>");
             var chip0prefab = new CustomPrefab(chip0info);
             var chip0 = WeAreMurderersMain.WAMAssets.LoadAsset<GameObject>("AlienDataCPU");
             PrefabUtils.AddBasicComponents(chip0, chip0info.ClassID, chip0info.TechType, LargeWorldEntity.CellLevel.Medium);
             MaterialUtils.ApplySNShaders(chip0);
             chip0.AddComponent<Pickupable>();
+            WeAreMurderersMain.Log.LogInfo(chip0.transform.childCount);
+            WeAreMurderersMain.Log.LogInfo(chip0.GetComponent<Renderer>().materials);
             chip0.SetActive(true);
             chip0prefab.SetGameObject(chip0);
             chip0prefab.Register();
@@ -59,6 +65,15 @@ namespace MurrenMods.WeAreMurderers.Object
             CoordinatedSpawnsHandler.RegisterCoordinatedSpawns(spawns);
             
             WeAreMurderersMain.Log.LogInfo("Successfully registered and spawned objects..");
+        }
+        
+        private static IEnumerable PrepareTextureBank()
+        {
+            CoroutineTask<GameObject> task = CraftData.GetPrefabForTechTypeAsync(TechType.PrecursorIonCrystal);
+            yield return task;
+            GameObject prefab = task.GetResult();
+            var mat = prefab.GetComponent<Material>();
+            _textures.Add(mat.mainTexture);
         }
     }
 }

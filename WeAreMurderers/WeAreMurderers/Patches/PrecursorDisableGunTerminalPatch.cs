@@ -10,6 +10,7 @@ namespace MurrenMods.WeAreMurderers.Patches
         [HarmonyPostfix]
         public static void NotifyGoalCompletePostfix(PrecursorDisableGunTerminal __instance)
         {
+            //doesnt work in creative apparently
             if (StoryGoalManager.main.IsGoalComplete(__instance.gunDeactivate.key))
             {
                 PDALog.Add("thankyou", true);
