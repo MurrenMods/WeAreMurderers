@@ -6,24 +6,37 @@ using Nautilus.Assets.PrefabTemplates;
 using Nautilus.Handlers;
 using Nautilus.Utility;
 using UnityEngine;
+using UnityEngine.Experimental.AssetBundlePatching;
 using UWE;
 
 namespace MurrenMods.WeAreMurderers.Object
 {
     public static class ObjectRegistry
     {
-        static List<UnityEngine.Texture> _textures = new List<UnityEngine.Texture>();
-        public static void RegisterChips(EntryData[] entries)
+        static List<UnityEngine.Material> _mats = new List<UnityEngine.Material>();
+
+        private static void RegisterChips(EntryData[] entries)
         {
-            PrepareTextureBank();
             var chip0info = PrefabInfo.WithTechType("chip0", "The end of the world", "<CORRUPTED>");
             var chip0prefab = new CustomPrefab(chip0info);
             var chip0 = WeAreMurderersMain.WAMAssets.LoadAsset<GameObject>("AlienDataCPU");
+            var chip0renderer = chip0.GetComponentInChildren<Renderer>();
             PrefabUtils.AddBasicComponents(chip0, chip0info.ClassID, chip0info.TechType, LargeWorldEntity.CellLevel.Medium);
-            MaterialUtils.ApplySNShaders(chip0);
+            chip0renderer.materials[1] = _mats[0];
+            chip0renderer.materials[1].CopyPropertiesFromMaterial(_mats[0]);
+            foreach (var e in _mats[0].GetTexturePropertyNameIDs())
+            {
+                chip0renderer.materials[1].SetTexture(e, _mats[0].GetTexture(e));
+            }
+            chip0renderer.materials[1].shader = _mats[0].shader;
+            chip0renderer.materials[0] = _mats[1];
+            chip0renderer.materials[0].CopyPropertiesFromMaterial(_mats[1]);
+            foreach (var e in _mats[1].GetTexturePropertyNameIDs())
+            {
+                chip0renderer.materials[0].SetTexture(e, _mats[1].GetTexture(e));
+            }
+            chip0renderer.materials[0].shader = _mats[1].shader;
             chip0.AddComponent<Pickupable>();
-            WeAreMurderersMain.Log.LogInfo(chip0.transform.childCount);
-            WeAreMurderersMain.Log.LogInfo(chip0.GetComponent<Renderer>().materials);
             chip0.SetActive(true);
             chip0prefab.SetGameObject(chip0);
             chip0prefab.Register();
@@ -41,9 +54,16 @@ namespace MurrenMods.WeAreMurderers.Object
             var graveobj = WeAreMurderersMain.WAMAssets.LoadAsset<GameObject>("AlienGrave");
             graveobj.SetActive(true);
             PrefabUtils.AddBasicComponents(graveobj, graveinfo.ClassID, graveinfo.TechType, LargeWorldEntity.CellLevel.Medium);
-            MaterialUtils.ApplySNShaders(graveobj);
             graveprefab.SetGameObject(graveobj);
             graveprefab.Register();
+            var graverenderer = graveobj.GetComponentInChildren<Renderer>();
+            graverenderer.materials[1] = _mats[0];
+            graverenderer.materials[1].CopyPropertiesFromMaterial(_mats[0]);
+            foreach (var e in _mats[0].GetTexturePropertyNameIDs())
+            {
+                graverenderer.materials[1].SetTexture(e, _mats[0].GetTexture(e));
+            }
+            graverenderer.materials[1].shader = _mats[0].shader;
             
             CoordinatedSpawnsHandler.RegisterCoordinatedSpawn(new SpawnInfo("QX-VR_Grave", new Vector3(348f, 155.4f, 906.4f), new Vector3(-118, -22, -90), new Vector3(45, 45, 45)));
 
@@ -67,13 +87,18 @@ namespace MurrenMods.WeAreMurderers.Object
             WeAreMurderersMain.Log.LogInfo("Successfully registered and spawned objects..");
         }
         
-        private static IEnumerable PrepareTextureBank()
+        public static IEnumerator PrepareTextureBankAndRegisterChips(EntryData[] entries)
         {
-            CoroutineTask<GameObject> task = CraftData.GetPrefabForTechTypeAsync(TechType.PrecursorIonCrystal);
-            yield return task;
-            GameObject prefab = task.GetResult();
-            var mat = prefab.GetComponent<Material>();
-            _textures.Add(mat.mainTexture);
+            CoroutineTask<GameObject> ioncubetask = CraftData.GetPrefabForTechTypeAsync(TechType.PrecursorIonCrystal);
+            WeAreMurderersMain.Log.LogInfo("Attempting to load texture bank.");
+            yield return ioncubetask;
+            GameObject ioncubeprefab = ioncubetask.GetResult();
+            var ioncuberend = ioncubeprefab.GetComponentInChildren<Renderer>();
+            _mats.Add(new Material(ioncuberend.sharedMaterials[0]));
+
+            
+            
+            RegisterChips(entries);
         }
     }
 }

@@ -3,6 +3,7 @@ using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
 using MurrenMods.WeAreMurderers.Entries;
+using MurrenMods.WeAreMurderers.Object;
 using Nautilus.FMod;
 using Nautilus.Handlers;
 using Nautilus.Utility;
@@ -33,7 +34,8 @@ namespace MurrenMods.WeAreMurderers
             Harmony.PatchAll();
             
             WAMAssets = AssetBundleLoadingUtils.LoadFromAssetsFolder(Assembly.GetExecutingAssembly(), "wearemurderers_res");
-
+            UWE.CoroutineHost.StartCoroutine(ObjectRegistry.PrepareTextureBankAndRegisterChips(Data.Entries));
+            
             LoadSounds();
             
             EntryHandler.RegisterEntries(Data.Entries);
