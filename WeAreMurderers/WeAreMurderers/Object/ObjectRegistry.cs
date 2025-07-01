@@ -6,6 +6,7 @@ using Nautilus.Assets.PrefabTemplates;
 using Nautilus.Handlers;
 using Nautilus.Utility;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.Experimental.AssetBundlePatching;
 using UWE;
 
@@ -65,6 +66,22 @@ namespace MurrenMods.WeAreMurderers.Object
             }
             graverenderer.materials[1].shader = _mats[0].shader;
             
+            graverenderer.materials[0] = _mats[1];
+            graverenderer.materials[0].CopyPropertiesFromMaterial(_mats[1]);
+            foreach (var e in _mats[1].GetTexturePropertyNameIDs())
+            {
+                graverenderer.materials[0].SetTexture(e, _mats[1].GetTexture(e));
+            }
+            graverenderer.materials[0].shader = _mats[1].shader;
+            
+            graverenderer.materials[2] = _mats[2];
+            graverenderer.materials[2].CopyPropertiesFromMaterial(_mats[2]);
+            foreach (var e in _mats[2].GetTexturePropertyNameIDs())
+            {
+                graverenderer.materials[2].SetTexture(e, _mats[2].GetTexture(e));
+            }
+            graverenderer.materials[2].shader = _mats[2].shader;
+            
             CoordinatedSpawnsHandler.RegisterCoordinatedSpawn(new SpawnInfo("QX-VR_Grave", new Vector3(348f, 155.4f, 906.4f), new Vector3(-118, -22, -90), new Vector3(45, 45, 45)));
 
             var align = new Vector3(90, 0, 0);
@@ -96,9 +113,65 @@ namespace MurrenMods.WeAreMurderers.Object
             var ioncuberend = ioncubeprefab.GetComponentInChildren<Renderer>();
             _mats.Add(new Material(ioncuberend.sharedMaterials[0]));
 
-            _mats.Add(new Material(ioncuberend.sharedMaterials[0]));
+            var matTask = new TaskResult<Material>();
+            yield return FindMaterialFromPath("Assets/Models/chassis/precursor/Materials/precursor_interior_tiles_00.mat", matTask);
+            var alienTiles = matTask.Get();
+            _mats.Add(alienTiles);
+            
+            var matTask2 = new TaskResult<Material>();
+            yield return FindMaterialFromPrefabPath("precursor_interior_tiles_12_moon_pool", "WorldEntities/Doodads/Precursor/TempGun_Interiors/Precursor_Gun_MoonPool.prefab", matTask2);
+            var alienTiles2 = matTask2.Get();
+            _mats.Add(alienTiles2);
             
             RegisterChips(entries);
+        }
+        private static IEnumerator FindMaterialFromPath(string path, IOut<Material> matResult)
+        {
+            Material mat = null;
+            do
+            {
+                var handle = AddressablesUtility.LoadAsync<Material>(path);
+                yield return handle.Task;
+                mat = handle.Result;
+                WeAreMurderersMain.Log.LogInfo("Loaded material " + path + ": " + (mat != null ? "Success" : "Failed"));
+            } while (mat == null);
+            matResult.Set(mat);
+        }
+
+        private static IEnumerator FindMaterialFromPrefabPath(string matName, string path, IOut<Material> matResult)
+        {
+            matResult.Set(null);
+            var task = PrefabDatabase.GetPrefabForFilenameAsync(path);
+            yield return task;
+            if (task.TryGetPrefab(out var prefab))
+            {
+                var renderers = prefab.GetAllComponentsInChildren<Renderer>();
+                foreach (var renderer in renderers)
+                {
+                    foreach (var mat in renderer.materials)
+                    {
+                        string strippedName = RemoveInstance(mat.name);
+                        if (strippedName.Equals(matName))
+                        {
+                            matResult.Set(mat);
+                            WeAreMurderersMain.Log.LogInfo("Found material " + strippedName + " in prefab " + path);
+                            yield break;
+                        }
+                    }
+                }
+            }
+        }
+
+        private static string RemoveInstance(string originalMatName)
+        {
+            string returnValue = originalMatName;
+            if(originalMatName.EndsWith(" (Instance)"))
+            {
+                returnValue = originalMatName.Substring(0, originalMatName.Length - 11);
+                return RemoveInstance(returnValue);
+            }
+
+            return returnValue;
         }
     }
 }
