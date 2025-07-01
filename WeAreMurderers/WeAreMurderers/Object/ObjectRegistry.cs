@@ -96,7 +96,7 @@ namespace MurrenMods.WeAreMurderers.Object
             var ioncuberend = ioncubeprefab.GetComponentInChildren<Renderer>();
             _mats.Add(new Material(ioncuberend.sharedMaterials[0]));
 
-            
+            _mats.Add(new Material(ioncuberend.sharedMaterials[0]));
             
             RegisterChips(entries);
         }
