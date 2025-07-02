@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using MurrenMods.WeAreMurderers.Entries;
+using MurrenMods.WeAreMurderers.Object.Component;
+using MurrenMods.WeAreMurderers.Patches;
 using Nautilus.Assets;
 using Nautilus.Assets.PrefabTemplates;
 using Nautilus.Handlers;
@@ -54,8 +56,9 @@ namespace MurrenMods.WeAreMurderers.Object
             var graveprefab = new CustomPrefab(graveinfo);
             var graveobj = WeAreMurderersMain.WAMAssets.LoadAsset<GameObject>("AlienGrave");
             graveobj.SetActive(true);
-            PrefabUtils.AddBasicComponents(graveobj, graveinfo.ClassID, graveinfo.TechType, LargeWorldEntity.CellLevel.Medium);
+            PrefabUtils.AddBasicComponents(graveobj, graveinfo.ClassID, graveinfo.TechType, LargeWorldEntity.CellLevel.VeryFar);
             graveprefab.SetGameObject(graveobj);
+            graveobj.AddComponent<LoadEventHandler>();
             graveprefab.Register();
             var graverenderer = graveobj.GetComponentInChildren<Renderer>();
             graverenderer.materials[1] = _mats[0];

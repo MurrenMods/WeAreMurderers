@@ -8,6 +8,8 @@ namespace MurrenMods.WeAreMurderers
         public int FoundChips = 0;
 
         public List<string> UnlockedEntries = new List<string>();
+        
+        public bool CuredGun = false;
 
     }
 }

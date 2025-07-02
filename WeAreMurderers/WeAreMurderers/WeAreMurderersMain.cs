@@ -17,7 +17,7 @@ namespace MurrenMods.WeAreMurderers
     {
         private const string WAMguid = "com.MurrenMods.WeAreMurderers";
         private const string PluginName = "We Are Murderers";
-        private const string VersionString = "0.1.0";
+        private const string VersionString = "1.0.0";
 
         public static AssetBundle WAMAssets { get; private set; }
         

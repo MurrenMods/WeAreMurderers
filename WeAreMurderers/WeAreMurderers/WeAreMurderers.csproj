@@ -85,6 +85,7 @@
         <Compile Include="Data.cs" />
         <Compile Include="Entries\EntryData.cs" />
         <Compile Include="Entries\EntryHandler.cs" />
+        <Compile Include="Object\Component\LoadEventHandler.cs" />
         <Compile Include="Object\ObjectRegistry.cs" />
         <Compile Include="Patches\PickupablePatch.cs" />
         <Compile Include="Patches\PrecursorDisableGunTerminalPatch.cs" />
