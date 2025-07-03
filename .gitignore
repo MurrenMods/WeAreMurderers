@@ -7,8 +7,8 @@
 *.sln.docstates
 
 # IDEA files
-.vs/
-.idea/
+*.vs/
+*.idea/
 
 # Build results
 
