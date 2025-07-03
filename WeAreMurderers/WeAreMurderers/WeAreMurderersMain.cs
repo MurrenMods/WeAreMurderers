@@ -1,13 +1,9 @@
-﻿using System.Reflection;
-using BepInEx;
+﻿using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
 using MurrenMods.WeAreMurderers.Entries;
 using MurrenMods.WeAreMurderers.Object;
-using Nautilus.FMod;
 using Nautilus.Handlers;
-using Nautilus.Utility;
-using UnityEngine;
 
 namespace MurrenMods.WeAreMurderers
 {
@@ -19,7 +15,8 @@ namespace MurrenMods.WeAreMurderers
         private const string PluginName = "We Are Murderers";
         private const string VersionString = "1.0.0";
 
-        public static AssetBundle WAMAssets { get; private set; }
+        public static ResourceManager ResourceManager { get; private set; }
+
         
         public static SaveData SaveData = new SaveData();
 
@@ -33,37 +30,19 @@ namespace MurrenMods.WeAreMurderers
             Logger.LogInfo("Loading " + PluginName + " " + VersionString + "...");
             Harmony.PatchAll();
             
-            WAMAssets = AssetBundleLoadingUtils.LoadFromAssetsFolder(Assembly.GetExecutingAssembly(), "wearemurderers_res");
-            UWE.CoroutineHost.StartCoroutine(ObjectRegistry.PrepareTextureBankAndRegisterChips(Data.Entries));
+            ResourceManager = new ResourceManager();
+            ResourceManager.LoadMainBundle();
+            UWE.CoroutineHost.StartCoroutine(ResourceManager.PrepareClonedMaterials());
+            UWE.CoroutineHost.StartCoroutine(ObjectRegistry.RegisterObjects(SharedData.Entries));
+            ResourceManager.LoadSounds();
             
-            LoadSounds();
-            
-            EntryHandler.RegisterEntries(Data.Entries);
+            EntryHandler.RegisterEntries(SharedData.Entries);
             LanguageHandler.RegisterLocalizationFolder();
             SaveData = SaveDataHandler.RegisterSaveDataCache<SaveData>();
             
             Logger.LogInfo(PluginName + " " + VersionString + " " + "loaded.");
         }
 
-        private void LoadSounds()
-        {
-            CustomSoundSourceBase source = new AssetBundleSoundSource(WAMAssets);
-            FModSoundBuilder builder = new FModSoundBuilder(source);
-            
-            builder.CreateNewEvent("languagelevel", "bus:/master/SFX_for_pause/PDA_pause/all/all voice/AI voice")
-                .SetMode2D()
-                .SetSound("languagelevelupgrade")
-                .Register();
-            
-            builder.CreateNewEvent("invalidchip9", "bus:/master/SFX_for_pause/PDA_pause/all/all voice/AI voice")
-                .SetMode2D()
-                .SetSound("chip9")
-                .Register();
-            
-            builder.CreateNewEvent("thankyou", "bus:/master/SFX_for_pause/PDA_pause/all/all voice/AI voice")
-                .SetMode2D()
-                .SetSound("thankyou")
-                .Register();
-        }
+        
     }
 }

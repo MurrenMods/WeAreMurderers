@@ -10,6 +10,5 @@ namespace MurrenMods.WeAreMurderers
         public List<string> UnlockedEntries = new List<string>();
         
         public bool CuredGun = false;
-
     }
 }

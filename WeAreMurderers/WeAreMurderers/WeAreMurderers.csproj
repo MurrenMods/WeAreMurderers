@@ -82,14 +82,16 @@
         </Reference>
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="Data.cs" />
+        <Compile Include="SharedData.cs" />
         <Compile Include="Entries\EntryData.cs" />
         <Compile Include="Entries\EntryHandler.cs" />
         <Compile Include="Object\Component\LoadEventHandler.cs" />
         <Compile Include="Object\ObjectRegistry.cs" />
         <Compile Include="Patches\PickupablePatch.cs" />
         <Compile Include="Patches\PrecursorDisableGunTerminalPatch.cs" />
+        <Compile Include="ResourceManager.cs" />
         <Compile Include="SaveData.cs" />
+        <Compile Include="Utility\MaterialUtility.cs" />
         <Compile Include="WeAreMurderersMain.cs" />
         <Compile Include="Properties\AssemblyInfo.cs"/>
     </ItemGroup>

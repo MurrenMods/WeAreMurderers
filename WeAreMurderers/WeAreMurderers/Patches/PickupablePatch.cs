@@ -1,15 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using HarmonyLib;
+﻿using HarmonyLib;
 using MurrenMods.WeAreMurderers.Entries;
-using Nautilus.Handlers;
 
 namespace MurrenMods.WeAreMurderers.Patches
 {
     [HarmonyPatch(typeof(Pickupable))]
     public class PickupablePatch
     {
-        private static bool playedNotification = false;
+        private static bool _playedNotification = false;
         [HarmonyPatch(nameof(Pickupable.OnHandClick))]
         [HarmonyPrefix]
         public static bool OnHandClickPrefix(Pickupable __instance)
@@ -31,9 +28,9 @@ namespace MurrenMods.WeAreMurderers.Patches
             if (id == "QX-VR_log9" && !WeAreMurderersMain.SaveData.UnlockedEntries.Contains("QX-VR_log8"))
             {
                 // If the chip is the last one, ensure the previous one is unlocked
-                if (!playedNotification)
+                if (!_playedNotification)
                 {
-                    playedNotification = true;
+                    _playedNotification = true;
                     PDALog.Add("invalidchip9", true);
                 }
                 WeAreMurderersMain.Log.LogInfo("Chip 9 " + id + " cannot be picked up because QX-VR_log8 is not unlocked.");
@@ -47,13 +44,13 @@ namespace MurrenMods.WeAreMurderers.Patches
 
             // If the chip is not unlocked, allow pickup and register the entry
             WeAreMurderersMain.SaveData.UnlockedEntries.Add(id);
-            int oldll = Data.LanguageLevel;
+            int oldll = SharedData.LanguageLevel;
             WeAreMurderersMain.SaveData.FoundChips++;
-            if(Data.LanguageLevel != oldll)
+            if(SharedData.LanguageLevel != oldll)
             {
                 PDALog.Add("languagelevel", true);
             }
-            EntryHandler.UnlockEntries(Data.LanguageLevel, WeAreMurderersMain.SaveData.UnlockedEntries);
+            EntryHandler.UnlockEntries(SharedData.LanguageLevel, WeAreMurderersMain.SaveData.UnlockedEntries);
             WeAreMurderersMain.Log.LogInfo("Picked up chip " + id + ", unlocking entry and updating language level.");
             return false;
         }

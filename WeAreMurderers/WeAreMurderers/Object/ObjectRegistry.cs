@@ -2,43 +2,37 @@
 using System.Collections.Generic;
 using MurrenMods.WeAreMurderers.Entries;
 using MurrenMods.WeAreMurderers.Object.Component;
-using MurrenMods.WeAreMurderers.Patches;
+using MurrenMods.WeAreMurderers.Utility;
 using Nautilus.Assets;
 using Nautilus.Assets.PrefabTemplates;
 using Nautilus.Handlers;
 using Nautilus.Utility;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
-using UnityEngine.Experimental.AssetBundlePatching;
-using UWE;
 
 namespace MurrenMods.WeAreMurderers.Object
 {
     public static class ObjectRegistry
     {
-        static List<UnityEngine.Material> _mats = new List<UnityEngine.Material>();
-
+        public static IEnumerator RegisterObjects(EntryData[] entries)
+        {
+            WeAreMurderersMain.Log.LogInfo("Registering objects...");
+            WeAreMurderersMain.Log.LogInfo("Waiting for material bank to be completed. If the mod hangs here, the materials never load.");
+            yield return new WaitUntil(() => WeAreMurderersMain.ResourceManager.LoadedMaterials);
+            WeAreMurderersMain.Log.LogInfo("Material bank loaded successfully. Proceeding with object registration.");
+            RegisterChips(entries);
+            RegisterGrave();
+            WeAreMurderersMain.Log.LogInfo("Object registration completed successfully.");
+        }
+        
         private static void RegisterChips(EntryData[] entries)
         {
             var chip0info = PrefabInfo.WithTechType("chip0", "The end of the world", "<CORRUPTED>");
             var chip0prefab = new CustomPrefab(chip0info);
-            var chip0 = WeAreMurderersMain.WAMAssets.LoadAsset<GameObject>("AlienDataCPU");
+            var chip0 = WeAreMurderersMain.ResourceManager.MainBundle.LoadAsset<GameObject>("AlienDataCPU");
             var chip0renderer = chip0.GetComponentInChildren<Renderer>();
             PrefabUtils.AddBasicComponents(chip0, chip0info.ClassID, chip0info.TechType, LargeWorldEntity.CellLevel.Medium);
-            chip0renderer.materials[1] = _mats[0];
-            chip0renderer.materials[1].CopyPropertiesFromMaterial(_mats[0]);
-            foreach (var e in _mats[0].GetTexturePropertyNameIDs())
-            {
-                chip0renderer.materials[1].SetTexture(e, _mats[0].GetTexture(e));
-            }
-            chip0renderer.materials[1].shader = _mats[0].shader;
-            chip0renderer.materials[0] = _mats[1];
-            chip0renderer.materials[0].CopyPropertiesFromMaterial(_mats[1]);
-            foreach (var e in _mats[1].GetTexturePropertyNameIDs())
-            {
-                chip0renderer.materials[0].SetTexture(e, _mats[1].GetTexture(e));
-            }
-            chip0renderer.materials[0].shader = _mats[1].shader;
+            MaterialUtility.ApplyMaterial(chip0renderer, 1, WeAreMurderersMain.ResourceManager.MaterialBank[0]);
+            MaterialUtility.ApplyMaterial(chip0renderer, 0, WeAreMurderersMain.ResourceManager.MaterialBank[1]);
             chip0.AddComponent<Pickupable>();
             chip0.SetActive(true);
             chip0prefab.SetGameObject(chip0);
@@ -52,41 +46,6 @@ namespace MurrenMods.WeAreMurderers.Object
                 chipprefab.Register();
             }
             
-            var graveinfo = PrefabInfo.WithTechType("QX-VR_Grave", "QX-VR_Grave", "A grave with a small device lodged on where the head would be");
-            var graveprefab = new CustomPrefab(graveinfo);
-            var graveobj = WeAreMurderersMain.WAMAssets.LoadAsset<GameObject>("AlienGrave");
-            graveobj.SetActive(true);
-            PrefabUtils.AddBasicComponents(graveobj, graveinfo.ClassID, graveinfo.TechType, LargeWorldEntity.CellLevel.VeryFar);
-            graveprefab.SetGameObject(graveobj);
-            graveobj.AddComponent<LoadEventHandler>();
-            graveprefab.Register();
-            var graverenderer = graveobj.GetComponentInChildren<Renderer>();
-            graverenderer.materials[1] = _mats[0];
-            graverenderer.materials[1].CopyPropertiesFromMaterial(_mats[0]);
-            foreach (var e in _mats[0].GetTexturePropertyNameIDs())
-            {
-                graverenderer.materials[1].SetTexture(e, _mats[0].GetTexture(e));
-            }
-            graverenderer.materials[1].shader = _mats[0].shader;
-            
-            graverenderer.materials[0] = _mats[1];
-            graverenderer.materials[0].CopyPropertiesFromMaterial(_mats[1]);
-            foreach (var e in _mats[1].GetTexturePropertyNameIDs())
-            {
-                graverenderer.materials[0].SetTexture(e, _mats[1].GetTexture(e));
-            }
-            graverenderer.materials[0].shader = _mats[1].shader;
-            
-            graverenderer.materials[2] = _mats[2];
-            graverenderer.materials[2].CopyPropertiesFromMaterial(_mats[2]);
-            foreach (var e in _mats[2].GetTexturePropertyNameIDs())
-            {
-                graverenderer.materials[2].SetTexture(e, _mats[2].GetTexture(e));
-            }
-            graverenderer.materials[2].shader = _mats[2].shader;
-            
-            CoordinatedSpawnsHandler.RegisterCoordinatedSpawn(new SpawnInfo("QX-VR_Grave", new Vector3(348f, 155.4f, 906.4f), new Vector3(-118, -22, -90), new Vector3(45, 45, 45)));
-
             var align = new Vector3(90, 0, 0);
             var scale = new Vector3(30, 30, 30);
             var spawns = new List<SpawnInfo>()
@@ -104,77 +63,26 @@ namespace MurrenMods.WeAreMurderers.Object
             
             CoordinatedSpawnsHandler.RegisterCoordinatedSpawns(spawns);
             
-            WeAreMurderersMain.Log.LogInfo("Successfully registered and spawned objects..");
+            WeAreMurderersMain.Log.LogInfo("Successfully registered chips and their spawns.");
+        }
+
+        private static void RegisterGrave()
+        {
+            var graveinfo = PrefabInfo.WithTechType("QX-VR_Grave", "QX-VR_Grave", "A grave with a small device lodged on where the head would be");
+            var graveprefab = new CustomPrefab(graveinfo);
+            var graveobj = WeAreMurderersMain.ResourceManager.MainBundle.LoadAsset<GameObject>("AlienGrave");
+            graveobj.SetActive(true);
+            PrefabUtils.AddBasicComponents(graveobj, graveinfo.ClassID, graveinfo.TechType, LargeWorldEntity.CellLevel.VeryFar);
+            graveprefab.SetGameObject(graveobj);
+            graveobj.AddComponent<LoadEventHandler>();
+            graveprefab.Register();
+            var graverenderer = graveobj.GetComponentInChildren<Renderer>();
+            MaterialUtility.ApplyMaterial(graverenderer, 1, WeAreMurderersMain.ResourceManager.MaterialBank[0]);
+            MaterialUtility.ApplyMaterial(graverenderer, 0, WeAreMurderersMain.ResourceManager.MaterialBank[1]);
+            MaterialUtility.ApplyMaterial(graverenderer, 2, WeAreMurderersMain.ResourceManager.MaterialBank[2]);
+            CoordinatedSpawnsHandler.RegisterCoordinatedSpawn(new SpawnInfo("QX-VR_Grave", new Vector3(348f, 155.4f, 906.4f), new Vector3(-118, -22, -90), new Vector3(45, 45, 45)));
+            WeAreMurderersMain.Log.LogInfo("Successfully registered grave and its spawn.");
         }
         
-        public static IEnumerator PrepareTextureBankAndRegisterChips(EntryData[] entries)
-        {
-            CoroutineTask<GameObject> ioncubetask = CraftData.GetPrefabForTechTypeAsync(TechType.PrecursorIonCrystal);
-            WeAreMurderersMain.Log.LogInfo("Attempting to load texture bank.");
-            yield return ioncubetask;
-            GameObject ioncubeprefab = ioncubetask.GetResult();
-            var ioncuberend = ioncubeprefab.GetComponentInChildren<Renderer>();
-            _mats.Add(new Material(ioncuberend.sharedMaterials[0]));
-
-            var matTask = new TaskResult<Material>();
-            yield return FindMaterialFromPath("Assets/Models/chassis/precursor/Materials/precursor_interior_tiles_00.mat", matTask);
-            var alienTiles = matTask.Get();
-            _mats.Add(alienTiles);
-            
-            var matTask2 = new TaskResult<Material>();
-            yield return FindMaterialFromPrefabPath("precursor_interior_tiles_12_moon_pool", "WorldEntities/Doodads/Precursor/TempGun_Interiors/Precursor_Gun_MoonPool.prefab", matTask2);
-            var alienTiles2 = matTask2.Get();
-            _mats.Add(alienTiles2);
-            
-            RegisterChips(entries);
-        }
-        private static IEnumerator FindMaterialFromPath(string path, IOut<Material> matResult)
-        {
-            Material mat = null;
-            do
-            {
-                var handle = AddressablesUtility.LoadAsync<Material>(path);
-                yield return handle.Task;
-                mat = handle.Result;
-                WeAreMurderersMain.Log.LogInfo("Loaded material " + path + ": " + (mat != null ? "Success" : "Failed"));
-            } while (mat == null);
-            matResult.Set(mat);
-        }
-
-        private static IEnumerator FindMaterialFromPrefabPath(string matName, string path, IOut<Material> matResult)
-        {
-            matResult.Set(null);
-            var task = PrefabDatabase.GetPrefabForFilenameAsync(path);
-            yield return task;
-            if (task.TryGetPrefab(out var prefab))
-            {
-                var renderers = prefab.GetAllComponentsInChildren<Renderer>();
-                foreach (var renderer in renderers)
-                {
-                    foreach (var mat in renderer.materials)
-                    {
-                        string strippedName = RemoveInstance(mat.name);
-                        if (strippedName.Equals(matName))
-                        {
-                            matResult.Set(mat);
-                            WeAreMurderersMain.Log.LogInfo("Found material " + strippedName + " in prefab " + path);
-                            yield break;
-                        }
-                    }
-                }
-            }
-        }
-
-        private static string RemoveInstance(string originalMatName)
-        {
-            string returnValue = originalMatName;
-            if(originalMatName.EndsWith(" (Instance)"))
-            {
-                returnValue = originalMatName.Substring(0, originalMatName.Length - 11);
-                return RemoveInstance(returnValue);
-            }
-
-            return returnValue;
-        }
     }
 }

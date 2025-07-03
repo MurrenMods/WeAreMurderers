@@ -1,9 +1,6 @@
 ﻿using System.Collections;
-using FMOD;
 using HarmonyLib;
-using MurrenMods.WeAreMurderers.Object;
 using Nautilus.Utility;
-using Story;
 using UnityEngine;
 
 namespace MurrenMods.WeAreMurderers.Patches

@@ -1,17 +1,9 @@
-﻿using System;
-using UnityEngine;
-
+﻿
 namespace MurrenMods.WeAreMurderers.Entries
 {
-    public class EntryData
+    public class EntryData(int count, string path)
     {
-        public int Count;
-        public string Path;
-        
-        public EntryData(int count, string path)
-        {
-            Count = count;
-            Path = path;
-        }
+        public int Count = count;
+        public string Path = path;
     }
 }

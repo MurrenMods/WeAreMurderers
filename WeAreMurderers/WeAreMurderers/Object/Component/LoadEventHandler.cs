@@ -1,5 +1,4 @@
-﻿using System;
-using MurrenMods.WeAreMurderers.Patches;
+﻿using MurrenMods.WeAreMurderers.Patches;
 using UnityEngine;
 
 namespace MurrenMods.WeAreMurderers.Object.Component;

@@ -1,18 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using MurrenMods.WeAreMurderers.Entries;
 
 namespace MurrenMods.WeAreMurderers
 {
-    public static class Data
+    public static class SharedData
     {
         public static int LanguageLevel => Math.Max(1, (WeAreMurderersMain.SaveData.FoundChips + 1) / 2);
         
-        public static EntryData[] Entries
-        {
-            get
-            {
-                return new EntryData[]
+        public static EntryData[] Entries =  new EntryData[]
                 {
                     new EntryData(5, "QX-VR_log1"),
                     new EntryData(5, "QX-VR_log2"),
@@ -24,7 +19,5 @@ namespace MurrenMods.WeAreMurderers
                     new EntryData(5, "QX-VR_log8"),
                     new EntryData(5, "QX-VR_log9"),
                 };
-            }
-        }
     }
 }

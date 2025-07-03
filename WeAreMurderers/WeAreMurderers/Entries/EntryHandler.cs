@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using BepInEx.Logging;
-using MurrenMods.WeAreMurderers.Object;
+﻿using System.Collections.Generic;
 using Nautilus.Handlers;
 
 namespace MurrenMods.WeAreMurderers.Entries
@@ -31,7 +27,7 @@ namespace MurrenMods.WeAreMurderers.Entries
             {
                 for (int i = 1; i <= languageLevel; i++)
                 {
-                    PDAEncyclopedia.Add(entry + "_" + i, true);
+                    PDAEncyclopedia.Add(entry + "_" + i, i == languageLevel);
                 }
             }
         }
