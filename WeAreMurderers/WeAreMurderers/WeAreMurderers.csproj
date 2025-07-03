@@ -96,10 +96,8 @@
         <Compile Include="Properties\AssemblyInfo.cs"/>
     </ItemGroup>
     <ItemGroup>
+      <Content Include="Assets\wearemurderers_res" />
       <Content Include="Localization\English.json" />
-    </ItemGroup>
-    <ItemGroup>
-      <Folder Include="Assets\" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets"/>
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
