@@ -12,16 +12,14 @@ public static class MaterialUtility
         {
             WeAreMurderersMain.Log.LogError("Cannot apply material: Renderer or Material is null.");
             return;
-        }
-        var targetMaterial = renderer.materials[slot];
-        targetMaterial = material;
-        targetMaterial.CopyPropertiesFromMaterial(material);
+        } 
+        renderer.materials[slot] = material;
+        renderer.materials[slot].CopyPropertiesFromMaterial(material);
         foreach (var e in material.GetTexturePropertyNameIDs())
         {
-            targetMaterial.SetTexture(e, material.GetTexture(e));
+            renderer.materials[slot].SetTexture(e, material.GetTexture(e));
         }
-        targetMaterial.shader = material.shader;
-        renderer.materials[slot] = targetMaterial;
+        renderer.materials[slot].shader = material.shader;
     }
     
     public static IEnumerator FindMaterialFromPath(string path, IOut<Material> matResult)
